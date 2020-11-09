@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import Home from './src/Home';
+import Home from './src/containers/Home';
 import store from './src/store';
 
 export default function App() {

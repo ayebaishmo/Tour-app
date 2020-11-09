@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   SafeAreaView,
   View,
@@ -8,14 +9,22 @@ import {
   Alert,
   StyleSheet,
   ActivityIndicator,
+  LogBox,
 } from 'react-native';
 
 const Home = () => {
+  const authReducer = useSelector((state) => state.authReducer);
+  // const { error, loading } = categoryReducer;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    createTwoButtonAlert();
+  }, []);
 
   const createTwoButtonAlert = () =>
     Alert.alert(
-      "Alert Title",
-      "My Alert Msg",
+      "Welcome!",
+      "Let's tour Uganda",
       [
         {
           text: "Cancel",
@@ -32,14 +41,12 @@ const Home = () => {
       <Text>
         Let's tour
       </Text>
-      <TextInput
-        placeholder="Enter name"
-        />
-      <Button
-      onPress={createTwoButtonAlert}
-        title="Enter"
-        color="#0064e1"
-      />
+      
+      <View>
+        <Text>
+        
+        </Text>    
+      </View>
     </View>
   );
 }
