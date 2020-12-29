@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import {primaryColor} from '../../helpers';
 
 const HomeCard = ({name, icon}) => {
   const iconColor = 'white';
@@ -9,7 +10,7 @@ const HomeCard = ({name, icon}) => {
 
   return (
     <View style={{
-      backgroundColor: 'blue',
+      backgroundColor: `${primaryColor}`,
       width: 155,
       margin: 2,
       borderRadius: 4,

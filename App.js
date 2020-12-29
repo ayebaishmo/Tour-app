@@ -5,7 +5,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
+
 import store from './src/store';
+import {primaryColor} from './src/helpers';
 
 import Home from './src/screens/Home';
 import Profile from './src/screens/Profile';
@@ -33,7 +35,7 @@ const TourApp = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: 'blue',
+        activeTintColor: `${primaryColor}`,
         inactiveTintColor: 'gray',
       }}
     >
