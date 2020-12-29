@@ -4,7 +4,7 @@ import { SafeAreaView, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import store from './src/store';
 
 import Home from './src/screens/Home';
@@ -26,10 +26,10 @@ const TourApp = () => {
             iconName = 'ios-home';
             // ios-home, ios-home-outline, user-alt, user
           } else if (route.name === 'Profile') {
-            iconName = 'user-alt';
+            iconName = 'ios-person';
           }
 
-          return <MaterialIcons name={iconName} size={12} color={color} />;
+          return <Ionicons name={iconName} size={24} color={color} />;
         },
       })}
       tabBarOptions={{
