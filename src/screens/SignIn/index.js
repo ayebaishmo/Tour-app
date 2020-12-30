@@ -29,15 +29,44 @@ const styles = StyleSheet.create({
   },
   bottom: {
     padding: 16,
+  },
+  textInput: {
+    height: 50, 
+    borderColor: `${primaryColor}`,
+    marginTop: 50, 
+    marginBottom: 30,
+    borderRadius: 5,
+    padding: 8,
+    borderWidth: 1
   }
 });
  
 const SignIn = ({navigation}) => {
   const [phone, setPhone] = useState('');
+  const [code, setCode] = useState('');
+  const [verified, setVerified] = useState(false);
 
-  const goToHome = () => {
+
+  // const PhoneNumberView = () => {
+  //   return (
+      
+  //   )
+  // }
+
+  // const CodeReceived = () => {
+  //     return (
+       
+  //     )
+  // }
+
+  const sendOTP = () => {
     if (phone) {
-      navigation.navigate("TourApp")
+
+      if (verified && code) {
+        navigation.navigate("TourApp")
+      } else {
+        setVerified(true);
+      }
     }
   }
 
@@ -49,26 +78,38 @@ const SignIn = ({navigation}) => {
         </View>
 
         <View style={styles.bottom}>
+
           <Text style={{textAlign: 'center', fontWeight: 'bold', fontSize: 24}}>OTP Authentication</Text>
-          <Text style={{textAlign: 'center', marginTop: 8}}>You will receive a One Time Password via your mobile number</Text>
+          { verified 
+          ? <View>
+              <Text style={{textAlign: 'center', marginTop: 8}}>Enter the OTP code sent to your phone number</Text>
 
-          <TextInput
-            style={{ 
-              height: 50, 
-              borderColor: `${primaryColor}`,
-              marginTop: 50, 
-              marginBottom: 30,
-              borderRadius: 5,
-              padding: 8,
-              borderWidth: 1 }}
-            editable
-            keyboardType="numeric"
-            maxLength={14}
-            onChangeText = {text => setPhone(text)}
-            value={phone}
-          />
+              <TextInput
+                style={styles.textInput}
+                editable
+                keyboardType="numeric"
+                maxLength={6}
+                placeholder="Enter code"
+                onChangeText = {text => setCode(text)}
+                value={code}
+              />
+            </View> 
+            : <View>
+              <Text style={{textAlign: 'center', marginTop: 8}}>You will receive a One Time Password via your mobile number</Text>
+      
+              <TextInput
+                style={styles.textInput}
+                editable
+                keyboardType="numeric"
+                maxLength={14}
+                placeholder="Phone number"
+                onChangeText = {txt => setPhone(txt)}
+                value={phone}
+              />
+            </View> 
+            } 
 
-          <TouchableOpacity onPress={goToHome}>
+          <TouchableOpacity onPress={sendOTP}>
             <View
               style={{
                 backgroundColor: `${primaryColor}`,
@@ -78,7 +119,7 @@ const SignIn = ({navigation}) => {
                 padding: 14,
               }}>
               <Text style={{color: 'white', fontSize: 16, textTransform: 'uppercase'}}>
-                Continue
+                { verified ? 'Verify' : 'Continue' }
               </Text>
             </View>
           </TouchableOpacity>
