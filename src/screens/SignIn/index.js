@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   View, 
   Text, 
@@ -9,9 +9,13 @@ import {
   Button,
   TouchableOpacity,
 } from 'react-native';
+import { Card } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
-import Constant from 'expo-constants'
+import Constant from 'expo-constants';
+import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
+import Toast from 'react-native-toast-message';
 
+import firebase from '../../firebase';
 import { primaryColor } from '../../helpers';
 import Logo from '../../../assets/icon.png';
  
@@ -31,34 +35,77 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   textInput: {
-    height: 50, 
     borderColor: `${primaryColor}`,
     marginTop: 50, 
-    marginBottom: 30,
+    marginBottom: 20,
     borderRadius: 5,
-    padding: 8,
-    borderWidth: 1
   }
 });
- 
+
 const SignIn = ({navigation}) => {
   const [phone, setPhone] = useState('');
   const [code, setCode] = useState('');
-  const [verified, setVerified] = useState(false);
+  const [isVerificationSent, setIsVerificationSent] = useState(false);
+  const [isCodeApproved, setIsCodeApproved] = useState(false);
+  const [verificationId, setVerificationId] = useState(null);
 
-  const sendOTP = () => {
+  const recaptchaVerifier = useRef(null);
+
+  const sendVerification = () => {
+    const phoneProvider = new firebase.auth.PhoneAuthProvider();
+    
     if (phone) {
-
-      if (verified && code) {
-        navigation.navigate("TourApp")
-      } else {
-        setVerified(true);
-      }
+      phoneProvider
+        .verifyPhoneNumber(`+256${phone}`, recaptchaVerifier.current)
+        .then((res) => {
+          console.log(res)
+          setVerificationId(res)
+          setIsVerificationSent(true)
+        });
+    } else {
+      Toast.show({
+        text2: 'Please enter a valid phone number',
+        position: 'bottom',
+        type: 'error',
+        autoHide: true
+      })
     }
-  }
+  };
+
+  const confirmCode = () => { 
+
+    if (code && isVerificationSent) {
+      const credential = firebase.auth.PhoneAuthProvider.credential(verificationId, code);
+      firebase
+        .auth()
+        .signInWithCredential(credential)
+        .then((res) => {
+          console.log(res);
+          const { providerData } = res;
+          console.log('User: ', providerData)
+          if (user.phoneNumber) {
+            navigation.navigate("TourApp");
+          }
+        });
+    } else {
+      Toast.show({
+        text2: 'Please enter a valid verification code',
+        position: 'bottom',
+        type: 'error',
+        autoHide: true
+      });
+    }
+
+  };
 
   return (
     <View style={styles.container}>
+
+      <FirebaseRecaptchaVerifierModal
+        ref={recaptchaVerifier}
+        firebaseConfig={firebase.app().options}
+      />
+
       <ScrollView>
         <View style={styles.top}>
           <Image source={Logo} style={{width: 150, height: 150}} />
@@ -67,50 +114,78 @@ const SignIn = ({navigation}) => {
         <View style={styles.bottom}>
 
           <Text style={{textAlign: 'center', fontWeight: 'bold', fontSize: 24}}>OTP Authentication</Text>
-          { verified 
-          ? <View>
+          { isVerificationSent && verificationId &&
+            <View>
               <Text style={{textAlign: 'center', marginTop: 8}}>Enter the OTP code sent to your phone number</Text>
 
-              <TextInput
-                style={styles.textInput}
-                editable
-                keyboardType="numeric"
-                maxLength={6}
-                placeholder="Enter code"
-                onChangeText = {text => setCode(text)}
-                value={code}
-              />
+              <Card containerStyle={styles.textInput}>
+                <TextInput
+                  editable
+                  keyboardType="numeric"
+                  maxLength={6}
+                  placeholder="Enter code"
+                  onChangeText = {text => setCode(text)}
+                  value={code}
+                />
+              </Card>
+
+              <TouchableOpacity onPress={confirmCode}>
+                <View
+                  style={{
+                    backgroundColor: `${primaryColor}`,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: 16,
+                    borderRadius: 5,
+                    padding: 14,
+                  }}>
+                  <Text style={{color: 'white', fontSize: 16, textTransform: 'uppercase'}}>
+                    Verify Code
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View> 
-            : <View>
-              <Text style={{textAlign: 'center', marginTop: 8}}>You will receive a One Time Password via your mobile number</Text>
-      
-              <TextInput
-                style={styles.textInput}
-                editable
-                keyboardType="numeric"
-                maxLength={14}
-                placeholder="Phone number"
-                onChangeText = {txt => setPhone(txt)}
-                value={phone}
-              />
-            </View> 
+            }
+            
+            { !isVerificationSent && 
+              <View>
+                <Text style={{textAlign: 'center', marginTop: 8}}>You will receive a One Time Password via your mobile number</Text>
+                <Card containerStyle={styles.textInput}>
+                  <View style={{flexDirection: 'row'}}>
+                    <TextInput 
+                    value="+256"
+                    style={{marginEnd: 8}}
+                    />
+                    <TextInput
+                      editable
+                      keyboardType="numeric"
+                      maxLength={9}
+                      placeholder="Phone number"
+                      onChangeText = {txt => setPhone(txt)}
+                      value={phone}
+                    />
+                  </View>
+                
+                </Card>
+
+                <TouchableOpacity onPress={sendVerification}>
+                  <View
+                    style={{
+                      backgroundColor: `${primaryColor}`,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      margin: 16,
+                      borderRadius: 5,
+                      padding: 14,
+                    }}>
+                    <Text style={{color: 'white', fontSize: 16, textTransform: 'uppercase'}}>
+                      Continue
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+                
+              </View> 
             } 
-
-          <TouchableOpacity onPress={sendOTP}>
-            <View
-              style={{
-                backgroundColor: `${primaryColor}`,
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: 5,
-                padding: 14,
-              }}>
-              <Text style={{color: 'white', fontSize: 16, textTransform: 'uppercase'}}>
-                { verified ? 'Verify' : 'Continue' }
-              </Text>
-            </View>
-          </TouchableOpacity>
-
 
         </View>
   

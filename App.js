@@ -4,6 +4,8 @@ import { SafeAreaView, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Toast from 'react-native-toast-message';
+import Constants from 'expo-constants';
 import { Ionicons } from '@expo/vector-icons';
 
 import {primaryColor} from './src/helpers';
@@ -18,6 +20,7 @@ import Hotels from './src/screens/Hotels';
 const RootStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+console.log(Constants.manifest.extra.apiKey)
 const TourApp = () => {
 
   return (
@@ -60,6 +63,7 @@ export default function App() {
             <RootStack.Screen name="Profile" component={Profile} />
           </RootStack.Navigator>
         </NavigationContainer>
+        <Toast ref={(ref) => Toast.setRef(ref)} />
       </SafeAreaView>
     </Provider>
   );
