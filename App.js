@@ -3,15 +3,50 @@ import { Provider } from 'react-redux';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
+
+import {primaryColor} from './src/helpers';
 
 import store from './src/store';
 
 import Home from './src/screens/Home';
 import Profile from './src/screens/Profile';
 import SignIn from './src/screens/SignIn';
-import TourApp from './src/screens/TourApp';
+import Hotels from './src/screens/Hotels';
 
 const RootStack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+const TourApp = () => {
+
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color }) => {
+          let iconName;
+
+          if (route.name === 'Home') {
+            iconName = 'ios-home';
+            // ios-home, ios-home-outline, user-alt, user
+          } else if (route.name === 'Profile') {
+            iconName = 'ios-person';
+          }
+
+          return <Ionicons name={iconName} size={24} color={color} />;
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: `${primaryColor}`,
+        inactiveTintColor: 'gray',
+      }}
+    >
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Profile" component={Profile} />
+    </Tab.Navigator>
+  )
+}
+
 
 export default function App() {
   return (
@@ -21,7 +56,7 @@ export default function App() {
           <RootStack.Navigator>
             <RootStack.Screen name="SignIn" component={SignIn} options={{headerShown: false}} />
             <RootStack.Screen name="TourApp" component={TourApp}  options={{headerLeft: () => null}} />
-            <RootStack.Screen name="Home" component={Home} />
+            <RootStack.Screen name="Hotels" component={Hotels} />
             <RootStack.Screen name="Profile" component={Profile} />
           </RootStack.Navigator>
         </NavigationContainer>

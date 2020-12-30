@@ -46,19 +46,6 @@ const SignIn = ({navigation}) => {
   const [code, setCode] = useState('');
   const [verified, setVerified] = useState(false);
 
-
-  // const PhoneNumberView = () => {
-  //   return (
-      
-  //   )
-  // }
-
-  // const CodeReceived = () => {
-  //     return (
-       
-  //     )
-  // }
-
   const sendOTP = () => {
     if (phone) {
 

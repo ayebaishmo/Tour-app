@@ -14,7 +14,7 @@ import {
 
 import HomeCard from '../../components/HomeCard';
 
-const Home = () => {
+const Home = ({ navigation }) => {
   const authReducer = useSelector((state) => state.authReducer);
   // const { error, loading } = categoryReducer;
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const Home = () => {
           flexWrap: 'wrap',
           justifyContent: 'center',
         }}>
-          <HomeCard name="Hotels" icon="ios-restaurant-sharp" />
+          <HomeCard name="Hotels" icon="ios-restaurant-sharp" onPressed={() => navigation.navigate("Hotels")} />
           <HomeCard name="Flights" icon="ios-airplane" />
           <HomeCard name="Boda" icon="ios-bicycle" />
           <HomeCard name="Taxi" icon="car-sport" />
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#fff',
   },
 })
 export default Home
