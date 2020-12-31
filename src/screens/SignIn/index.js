@@ -338,22 +338,6 @@ const SignIn = ({navigation, route}) => {
                   loading={loading}
                   onPress={confirmCode}
                 />
-
-              <TouchableOpacity onPress={checkLoad}>
-                <View
-                  style={{
-                    backgroundColor: `${primaryColor}`,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: 16,
-                    borderRadius: 5,
-                    padding: 14,
-                  }}>
-                  <Text style={{color: 'white', fontSize: 16, textTransform: 'uppercase'}}>
-                    Reset
-                  </Text>
-                </View>
-              </TouchableOpacity>
             </View> 
             }
             
@@ -386,24 +370,7 @@ const SignIn = ({navigation, route}) => {
                   title="Continue"
                   loading={loading}
                   onPress={sendVerification}
-                />
-
-                <TouchableOpacity onPress={checkLoad}>
-                  <View
-                    style={{
-                      backgroundColor: `${primaryColor}`,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      margin: 16,
-                      borderRadius: 5,
-                      padding: 14,
-                    }}>
-                    <Text style={{color: 'white', fontSize: 16, textTransform: 'uppercase'}}>
-                      Reset
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-                
+                />                
               </View> 
             } 
 
