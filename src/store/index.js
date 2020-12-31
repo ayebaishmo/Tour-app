@@ -1,7 +1,22 @@
-import { createStore } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
+import thunk from 'redux-thunk';
+import { persistStore, persistReducer } from 'redux-persist';
+import AsyncStorage from '@react-native-community/async-storage';
+
 import reducer from './reducers/index';
 
+const persistConfig = {
+  key: 'tourApp',
+  storage: AsyncStorage,
+  whitelist: ['authReducer']
+};
+const rootReducer = persistReducer(persistConfig, reducer);
 
-const store = createStore(reducer);
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
-export default store;
+const persistor = persistStore(store);
+
+export {
+  store,
+  persistor,
+};

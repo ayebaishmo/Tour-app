@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { Card, Button } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
+import { useDispatch, useSelector } from 'react-redux';
 import Constant from 'expo-constants';
 import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
 import Toast from 'react-native-toast-message';
@@ -19,6 +20,7 @@ LogBox.ignoreLogs(['Setting a timer']);
 import firebase from '../../firebase';
 import { primaryColor } from '../../helpers';
 import Logo from '../../../assets/icon.png';
+import { loggedInUser } from '../../store/actions/authActions';
  
 const styles = StyleSheet.create({
   container: {
@@ -48,7 +50,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const SignIn = ({navigation}) => {
+const SignIn = ({navigation, route}) => {
   const [phone, setPhone] = useState('');
   const [code, setCode] = useState('');
   const [name, setName] = useState('');
@@ -61,6 +63,24 @@ const SignIn = ({navigation}) => {
   const [loading, setLoading] = useState(false);
 
   const recaptchaVerifier = useRef(null);
+  const authReducer = useSelector(state => state.authReducer);
+  const { user,  isLoggedIn } = authReducer;
+  console.log('User found: ', user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigation.navigate("TourApp");
+      navigation.reset({
+        index: 0,
+        routes: [
+          {
+            name: 'TourApp',
+          },
+        ],
+      })
+    }
+  }, []);
 
   const sendVerification = () => {
     setLoading(true);
@@ -120,8 +140,16 @@ const SignIn = ({navigation}) => {
       .then(snapshot => {
 
         if (snapshot.exists) {
-          console.log('User exists');
-          navigation.navigate("TourApp");
+          console.log('User exists', snapshot);
+          dispatch(loggedInUser(snapshot.data()));
+          navigation.reset({
+            index: 0,
+            routes: [
+              {
+                name: 'TourApp',
+              },
+            ],
+          })
         } else{
           console.log('User does not exist');
           setEditProfile(true);
@@ -174,6 +202,7 @@ const SignIn = ({navigation}) => {
             const profile = {
               name: user.displayName,
               email: user.email,
+              phone: user.phoneNumber,
               address: address,
               photoURL: user.photoURL,
               refreshToken: user.refreshToken,
@@ -186,6 +215,7 @@ const SignIn = ({navigation}) => {
               .then(profileRes => {
                 setLoading(false);
                 console.log(profileRes);
+                dispatch(loggedInUser(profile));
                 navigation.navigate("TourApp");
               })
               .catch(error => {

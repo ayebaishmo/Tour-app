@@ -17,12 +17,19 @@ import {Ionicons, MaterialIcons} from '@expo/vector-icons';
 
 import {primaryColor} from '../../helpers';
 import Logo from '../../../assets/icon.png';
+import { setLogOut } from '../../store/actions/authActions';
 
-const Profile = () => {
+const Profile = ({navigation}) => {
   const authReducer = useSelector((state) => state.authReducer);
-  // const { error, loading } = categoryReducer;
+  const { user } = authReducer;
+  console.log('Saved User: ', user);
   const dispatch = useDispatch();
   const iconSize = 24;
+
+  const logout = () => {
+    dispatch(setLogOut());
+    navigation.navigate('SignIn');
+  };
 
   return (
     <View style={styles.container}>
@@ -34,8 +41,8 @@ const Profile = () => {
           </View>
 
           <View style={{marginTop: 20, alignItems: 'center'}}>
-            <Text style={{fontSize: 20, fontWeight: 'bold'}}>John Doe</Text>
-            <Text>+256 773 047 7940</Text>
+            <Text style={{fontSize: 20, fontWeight: 'bold'}}>{user.name}</Text>
+            <Text>{user.phone}</Text>
             <Button
               icon={
                 <MaterialIcons
@@ -56,12 +63,12 @@ const Profile = () => {
           <Card containerStyle={{borderRadius: 10}}>
             <View style={{flexDirection: 'row', margin: 16}}>
               <Ionicons name="mail" size={iconSize} color={primaryColor} />
-              <Text style={styles.textStyle}>johndoe@gmail.com</Text>
+              <Text style={styles.textStyle}>{user.email}</Text>
             </View>
 
             <View style={{flexDirection: 'row', margin: 16}}>
               <Ionicons name="ios-location" size={iconSize} color={primaryColor} />
-              <Text style={styles.textStyle}>Kitintale, Kampala</Text>
+              <Text style={styles.textStyle}>{user.address}</Text>
             </View>
           </Card>
 
@@ -76,6 +83,7 @@ const Profile = () => {
             }
             buttonStyle={{width: 150, backgroundColor: `${primaryColor}`, alignSelf: 'center', marginTop: 30}}
             title="Logout"
+            onPress={logout}
           />
 
         </View>

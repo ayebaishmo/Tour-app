@@ -3,19 +3,8 @@ import {
   setLogIn, setLogOut, authLoading, loggedInUser, createUser, authError,
 } from './authActions';
 
-const logInUser = (payload) => (dispatch) => {
-  dispatch(authLoading());
-  const { email, password } = payload;
-  // firebaseApp.auth().signInWithEmailAndPassword(email, password)
-  //   .then((result) => {
-  //     dispatch(dispatch(setLogIn()));
-  //     console.log(result);
-  //     dispatch(loggedInUser(result.user));
-  //   })
-  //   .catch((err) => {
-  //     dispatch(authError(err.message));
-  //     console.log(err);
-  //   });
+const logInUser = (profile) => (dispatch) => {
+  dispatch(loggedInUser(profile));
 };
 
 const logOutUser = () => (dispatch) => {
