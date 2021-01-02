@@ -28,7 +28,7 @@ const Home = ({ navigation }) => {
           flexWrap: 'wrap',
           justifyContent: 'center',
         }}>
-          <HomeCard name="Hotels" icon="ios-restaurant-sharp" onPressed={() => navigation.navigate("Hotels")} />
+          <HomeCard name="Hotels" icon="ios-restaurant-sharp" onPressed={() => navigation.navigate("HotelsScreen")} />
           <HomeCard name="Flights" icon="ios-airplane" />
           <HomeCard name="Boda" icon="ios-bicycle" />
           <HomeCard name="Taxi" icon="car-sport" />

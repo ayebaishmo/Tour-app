@@ -75,7 +75,7 @@ const SignIn = ({navigation, route}) => {
         index: 0,
         routes: [
           {
-            name: 'TourApp',
+            name: 'Root',
           },
         ],
       })
