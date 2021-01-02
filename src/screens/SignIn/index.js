@@ -65,12 +65,10 @@ const SignIn = ({navigation, route}) => {
   const recaptchaVerifier = useRef(null);
   const authReducer = useSelector(state => state.authReducer);
   const { user,  isLoggedIn } = authReducer;
-  console.log('User found: ', user);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigation.navigate("TourApp");
       navigation.reset({
         index: 0,
         routes: [
@@ -245,11 +243,6 @@ const SignIn = ({navigation, route}) => {
       });
     }
 
-  }
-
-  const checkLoad = () => {
-    setIsVerificationSent(false);
-    setLoading(false);
   }
 
   return (

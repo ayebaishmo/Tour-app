@@ -21,7 +21,6 @@ import Hotels from './src/screens/Hotels';
 const RootStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-console.log(Constants.manifest.extra.apiKey)
 const TourApp = () => {
 
   return (

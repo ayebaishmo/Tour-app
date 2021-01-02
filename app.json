@@ -42,7 +42,11 @@
       "apiKey": "process.env.TOUR_APP_API_KEY",
       "messagingId": "process.env.TOUR_APP_MESSAGING_SENDER_ID",
       "appId": "process.env.TOUR_APP_APP_ID",
-      "measurementId": "process.env.TOUR_APP_MEASUREMENT_ID"
+      "measurementId": "process.env.TOUR_APP_MEASUREMENT_ID",
+      "googleMaps": {
+        "apiKey": "AIzaSyDKM3W16aGHYgbKqnFqylxdfj_aQwFwnBE"
+      },
+      "baseUrl": "https://maps.googleapis.com/maps/api/place"
     }
   }
 }

@@ -22,7 +22,6 @@ import { setLogOut } from '../../store/actions/authActions';
 const Profile = ({navigation}) => {
   const authReducer = useSelector((state) => state.authReducer);
   const { user, isLoggedIn } = authReducer;
-  console.log('Saved User: ', user);
   const dispatch = useDispatch();
   const iconSize = 24;
 
