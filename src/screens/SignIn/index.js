@@ -18,7 +18,6 @@ import Toast from 'react-native-toast-message';
 LogBox.ignoreLogs(['Setting a timer']);
 
 import firebase from '../../firebase';
-import 'firebase/firebase';
 
 import { primaryColor } from '../../helpers';
 import Logo from '../../../assets/icon.png';
@@ -69,8 +68,6 @@ const SignIn = ({navigation, route}) => {
   const authReducer = useSelector(state => state.authReducer);
   const { user,  isLoggedIn } = authReducer;
   const dispatch = useDispatch();
-
-  firebase.auth().signOut();
 
   useEffect(() => {
     if (isLoggedIn) {
