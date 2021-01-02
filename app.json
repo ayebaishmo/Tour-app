@@ -8,7 +8,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#003399"
     },
     "privacy": "public",
     "platforms": [
@@ -44,7 +44,7 @@
       "appId": "process.env.TOUR_APP_APP_ID",
       "measurementId": "process.env.TOUR_APP_MEASUREMENT_ID",
       "googleMaps": {
-        "apiKey": "AIzaSyDKM3W16aGHYgbKqnFqylxdfj_aQwFwnBE"
+        "apiKey": "AIzaSyCYeFTZcQ0ptQrdS9v0BKkH3tQrV_pQ47w"
       },
       "baseUrl": "https://maps.googleapis.com/maps/api/place"
     }

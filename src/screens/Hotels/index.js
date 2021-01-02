@@ -166,34 +166,39 @@ const Hotels = () => {
         }
         body={
             <View>
-              <ScrollView horizontal={true} style={{marginTop: 10, marginBottom: 10}}>
-                {places.map((hotel, index) => (
-                  <Card 
-                    key={hotel.place_id} 
-                    style={styles.bottomCard}
-                    containerStyle={{borderRadius: 10, width: 200}}
-                    >
-                    <View >
-                      {
-                        hotel.photos 
-                        ? <Image 
-                          source={{uri: `${baseUrl}/photo?maxwidth=400&photoreference=${hotel.photos[0].photo_reference}&key=${apiKey}`}} 
-                          style={{width: '100%', height: 100}}
-                          onError={(err) => console.log('Image error: ',err)}
-                          />
-                        : <Image
-                          source={{uri: hotel.icon}} 
-                          style={{width: '100%', height: 100}}
-                          onError={(err) => console.log('Image error: ',err)}
-                          />
-                      }
-                      
-                      <Text key={index} style={{marginTop: 8}}>{hotel.name}</Text>
-                    </View>
+              {
+                loading 
+                ? <Text style={{textAlign: 'center'}}>Loading...</Text>
+                : <ScrollView horizontal={true} style={{marginTop: 10, marginBottom: 10}}>
+                  {places.map((hotel, index) => (
+                    <Card 
+                      key={hotel.place_id} 
+                      style={styles.bottomCard}
+                      containerStyle={{borderRadius: 10, width: 200}}
+                      >
+                      <View >
+                        {
+                          hotel.photos 
+                          ? <Image 
+                            source={{uri: `${baseUrl}/photo?maxwidth=400&photoreference=${hotel.photos[0].photo_reference}&key=${apiKey}`}} 
+                            style={{width: '100%', height: 100}}
+                            onError={(err) => console.log('Image error: ',err)}
+                            />
+                          : <Image
+                            source={{uri: hotel.icon}} 
+                            style={{width: '100%', height: 100}}
+                            onError={(err) => console.log('Image error: ',err)}
+                            />
+                        }
+                        
+                        <Text key={index} style={{marginTop: 8}}>{hotel.name}</Text>
+                      </View>
+                
+                    </Card>
+                  ))}
+                </ScrollView>
+              }
               
-                  </Card>
-                ))}
-              </ScrollView>
             </View>
           
         }

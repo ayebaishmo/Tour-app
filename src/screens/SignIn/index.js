@@ -18,6 +18,8 @@ import Toast from 'react-native-toast-message';
 LogBox.ignoreLogs(['Setting a timer']);
 
 import firebase from '../../firebase';
+import 'firebase/firebase';
+
 import { primaryColor } from '../../helpers';
 import Logo from '../../../assets/icon.png';
 import { loggedInUser } from '../../store/actions/authActions';
@@ -49,6 +51,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   }
 });
+const db = firebase.firestore();
 
 const SignIn = ({navigation, route}) => {
   const [phone, setPhone] = useState('');
@@ -66,6 +69,8 @@ const SignIn = ({navigation, route}) => {
   const authReducer = useSelector(state => state.authReducer);
   const { user,  isLoggedIn } = authReducer;
   const dispatch = useDispatch();
+
+  firebase.auth().signOut();
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -133,7 +138,7 @@ const SignIn = ({navigation, route}) => {
 
   const checkUserProfile = () => {
     const user = firebase.auth().currentUser;
-    firebase.firestore().collection('/users').doc(user.uid)
+    db.collection('/users').doc(user.uid)
       .get()
       .then(snapshot => {
 
@@ -208,7 +213,7 @@ const SignIn = ({navigation, route}) => {
             }
             console.log(profile);
 
-            firebase.firestore().collection('/users').doc(user.uid)
+            db.collection('/users').doc(user.uid)
               .set(profile)
               .then(profileRes => {
                 setLoading(false);

@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import {Button, Card, Divider} from 'react-native-elements';
 import {Ionicons, MaterialIcons} from '@expo/vector-icons';
+import firebase from '../../firebase';
 
 import {primaryColor} from '../../helpers';
 import Logo from '../../../assets/icon.png';
@@ -28,6 +29,7 @@ const Profile = ({navigation}) => {
   const logout = () => {
     if (user && isLoggedIn) {
       dispatch(setLogOut());
+      firebase.auth().signOut();
       navigation.navigate('SignIn');
     }
   };

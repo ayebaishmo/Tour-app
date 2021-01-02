@@ -6,11 +6,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { PersistGate } from 'redux-persist/integration/react';
 import Toast from 'react-native-toast-message';
-import Constants from 'expo-constants';
 import { Ionicons } from '@expo/vector-icons';
 
 import {primaryColor} from './src/helpers';
-
 import { store, persistor } from './src/store';
 
 import Home from './src/screens/Home';
