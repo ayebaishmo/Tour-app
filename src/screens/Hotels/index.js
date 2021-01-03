@@ -12,6 +12,7 @@ import * as Location from 'expo-location';
 import { LocationGeofencingEventType } from 'expo-location';
 import { FAB, Searchbar } from "react-native-paper";
 import * as TaskManager from 'expo-task-manager';
+import  { mapsApiKey } from '../../../config';
 import BottomSheet from "react-native-bottomsheet-reanimated";
 import {MaterialIcons} from '@expo/vector-icons';
 import Constants from 'expo-constants';
@@ -21,7 +22,7 @@ import axios from 'axios';
 
 const Hotels = () => {
   const [locationResult, setLocationResult] = useState(null);
-  const [searchItem, setsearchItem] = useState({ item: `` });
+  const [searchItem, setSearchItem] = useState('');
   const [places, setPlaces] = useState([]);
   const [loading, setLoading] = useState(false);
   const [state, setstate] = useState({
@@ -32,13 +33,26 @@ const Hotels = () => {
   });
 
   const baseUrl = Constants.manifest.extra.baseUrl;
-  const apiKey = Constants.manifest.extra.googleMaps.apiKey;
+  const apiKey = mapsApiKey;
 
   const fetchNearByHotels = async (lat, lon) => {
-
     setLoading(true);
     await axios
-      .get(`${baseUrl}/nearbysearch/json?location=${lat},${lon}&radius=2000&type=hotel&keyword=lodging&key=${apiKey}`)
+      .get(`${baseUrl}/nearbysearch/json?location=${lat},${lon}&radius=2000&type=hotel&keyword=lodging,spa&key=${apiKey}`)
+      .then(res => {
+        setPlaces(res.data.results);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.log('Places error: ', err);
+        setLoading(false);
+      });
+  }
+
+  const searchHotel = async (item) => {
+    setLoading(true);
+    await axios
+      .get(`${baseUrl}/textsearch/json?query=${item}&type=lodging,meal_delivery,meal_takeaway,bar,cafe,restaurant,spa&region=ug&key=${apiKey}`)
       .then(res => {
         setPlaces(res.data.results);
         setLoading(false);
@@ -80,20 +94,11 @@ const Hotels = () => {
       .then(err => {
         console.log(err);
       });
-    
-    
-    // Location.startGeofencingAsync(`LOCATION_GEOFENCE`, [
-    //   {
-    //     identifier: `Tour App properties`,
-    //     latitude: state.latitude,
-    //     longitude: state.longitude,
-    //     radius: 2000,
-    //     notifyOnEnter: true,
-    //     notifyOnExit: true
-    //   }
-    // ]);
   };
 
+  const onSelectedPlace = (hotel) => {
+    console.log(`${hotel.name} selected`);
+  }
 
   return (
     <View style={styles.container}>
@@ -131,12 +136,6 @@ const Hotels = () => {
               </Marker>);
           })
         }
-        {/* <Marker
-          coordinate={state}
-          title="My Location"
-          description="Description"
-          
-        /> */}
 
       </MapView>
 
@@ -147,18 +146,19 @@ const Hotels = () => {
           top: 1,
           margin: 10
         }}
-          value={searchItem?.item}
-        onChangeText= {(item) => setsearchItem({ ...searchItem, item })}
-        onIconPress={() => {}}
+          value={searchItem}
+        onChangeText= {(item) => searchHotel(item)}
+        onIconPress={() => console.log('Icon pressed')}
       />
 
       <BottomSheet
         bottomSheerColor="#FFFFFF"
-        initialPosition={`30%`}  // 200, 300
-        snapPoints={[`10%`, `60%`]}
+        initialPosition={`40%`}  // 200, 300
+        snapPoints={[`20%`, `60%`]}
         isBackDropDismisByPress={true}
         isRoundBorderWithTipHeader={true}
-        containerStyle={{ "backgroundColor": `#fff` }}
+        containerStyle={{ backgroundColor: '#fff'}}
+        style={{marginBottom: 100 }}
         header={
           <View>
             <Text style={{fontWeight: 'bold', fontSize: 20, marginTop: 8}}>Hotels near you</Text>
@@ -169,32 +169,36 @@ const Hotels = () => {
               {
                 loading 
                 ? <Text style={{textAlign: 'center'}}>Loading...</Text>
-                : <ScrollView horizontal={true} style={{marginTop: 10, marginBottom: 10}}>
+                : <ScrollView 
+                    horizontal={true} 
+                    style={{ paddingTop: 10, paddingBottom: 10}}>
                   {places.map((hotel, index) => (
-                    <Card 
+                    <TouchableOpacity 
                       key={hotel.place_id} 
-                      style={styles.bottomCard}
-                      containerStyle={{borderRadius: 10, width: 200}}
-                      >
-                      <View >
-                        {
-                          hotel.photos 
-                          ? <Image 
-                            source={{uri: `${baseUrl}/photo?maxwidth=400&photoreference=${hotel.photos[0].photo_reference}&key=${apiKey}`}} 
-                            style={{width: '100%', height: 100}}
-                            onError={(err) => console.log('Image error: ',err)}
-                            />
-                          : <Image
-                            source={{uri: hotel.icon}} 
-                            style={{width: '100%', height: 100}}
-                            onError={(err) => console.log('Image error: ',err)}
-                            />
-                        }
-                        
-                        <Text key={index} style={{marginTop: 8}}>{hotel.name}</Text>
-                      </View>
-                
-                    </Card>
+                      onPress={() => onSelectedPlace(hotel)}>
+                      <Card 
+                        style={styles.bottomCard}
+                        containerStyle={{borderRadius: 10, width: 200}}
+                        >
+                        <View >
+                          {
+                            hotel.photos 
+                            ? <Image 
+                              source={{uri: `${baseUrl}/photo?maxwidth=400&photoreference=${hotel.photos[0].photo_reference}&key=${apiKey}`}} 
+                              style={{width: '100%', height: 100}}
+                              onError={(err) => console.log('Image error: ',err)}
+                              />
+                            : <Image
+                              source={{uri: hotel.icon}} 
+                              style={{width: '100%', height: 100}}
+                              onError={(err) => console.log('Image error: ',err)}
+                              />
+                          }
+                          
+                          <Text key={index} style={{marginTop: 8}}>{hotel.name}</Text>
+                        </View>                
+                      </Card>
+                    </TouchableOpacity>
                   ))}
                 </ScrollView>
               }
@@ -214,9 +218,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 56,
   },
   map: {
-    marginTop: 180,
+    marginTop: 165,
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
   },

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, StyleSheet, useColorScheme } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -14,44 +15,6 @@ import { store, persistor } from './src/store';
 import useCachedResources from './src/hooks/useCachedResources';
 import Navigation from './src/navigation';
 
-// import Home from './src/screens/Home';
-// import Profile from './src/screens/Profile';
-// import SignIn from './src/screens/SignIn';
-// import Hotels from './src/screens/Hotels';
-
-// const RootStack = createStackNavigator();
-// const Tab = createBottomTabNavigator();
-
-// const TourApp = () => {
-
-//   return (
-//     <Tab.Navigator
-//       screenOptions={({ route }) => ({
-//         tabBarIcon: ({ color }) => {
-//           let iconName;
-
-//           if (route.name === 'Home') {
-//             iconName = 'ios-home';
-//             // ios-home, ios-home-outline, user-alt, user
-//           } else if (route.name === 'Profile') {
-//             iconName = 'ios-person';
-//           }
-
-//           return <Ionicons name={iconName} size={24} color={color} />;
-//         },
-//       })}
-//       tabBarOptions={{
-//         activeTintColor: `${primaryColor}`,
-//         inactiveTintColor: 'gray',
-//       }}
-//     >
-//       <Tab.Screen name="Home" component={Home} />
-//       <Tab.Screen name="Profile" component={Profile} />
-//     </Tab.Navigator>
-//   )
-// }
-
-
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
@@ -64,7 +27,7 @@ export default function App() {
         <PersistGate loading={null} persistor={persistor}>
           <SafeAreaView style={styles.container}>
             <Navigation colorScheme={colorScheme} />
-        
+            <StatusBar />
             <Toast ref={(ref) => Toast.setRef(ref)} />
           </SafeAreaView>
         </PersistGate>

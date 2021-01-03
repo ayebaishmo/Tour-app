@@ -1,7 +1,7 @@
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 
-import firebaseConfig from '../../config';
+import  { firebaseConfig } from '../../config';
 
 if (!firebase.apps.length) {
   console.log('Connected with Firebase')
