@@ -17,7 +17,6 @@ import BottomSheet from "react-native-bottomsheet-reanimated";
 import {MaterialIcons} from '@expo/vector-icons';
 import Constants from 'expo-constants';
 
-import datas from '../../helpers/tasks.json';
 import axios from 'axios';
 
 const Hotels = () => {
@@ -50,17 +49,22 @@ const Hotels = () => {
   }
 
   const searchHotel = async (item) => {
+    console.log(item)
+    setSearchItem(item);
     setLoading(true);
-    await axios
-      .get(`${baseUrl}/textsearch/json?query=${item}&type=lodging,meal_delivery,meal_takeaway,bar,cafe,restaurant,spa&region=ug&key=${apiKey}`)
-      .then(res => {
-        setPlaces(res.data.results);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.log('Places error: ', err);
-        setLoading(false);
-      });
+
+    if (item) {
+      await axios
+        .get(`${baseUrl}/textsearch/json?query=${item}&type=lodging,meal_delivery,meal_takeaway,bar,cafe,restaurant,spa&region=ug&key=${apiKey}`)
+        .then(res => {
+          setPlaces(res.data.results);
+          setLoading(false);
+        })
+        .catch(err => {
+          console.log('Places error: ', err);
+          setLoading(false);
+        });
+    }
   }
 
   let nameFilter = null;
@@ -140,14 +144,14 @@ const Hotels = () => {
       </MapView>
 
       <Searchbar
-        placeholder="Search"
+        placeholder="Search hotel"
         style={{
           position: 'absolute',
           top: 1,
           margin: 10
         }}
-          value={searchItem}
-        onChangeText= {(item) => searchHotel(item)}
+        value={searchItem}
+        onChangeText={searchHotel}
         onIconPress={() => console.log('Icon pressed')}
       />
 

@@ -29,7 +29,9 @@ const HomeCard = ({name, icon, onPressed}) => {
 }
 
 HomeCard.propTypes = {
-
+  onPressed: PropTypes.func,
+  icon: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 }
 
 export default HomeCard

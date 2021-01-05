@@ -146,7 +146,7 @@ const SignIn = ({navigation, route}) => {
             index: 0,
             routes: [
               {
-                name: 'TourApp',
+                name: 'Root',
               },
             ],
           })
@@ -216,7 +216,7 @@ const SignIn = ({navigation, route}) => {
                 setLoading(false);
                 console.log(profileRes);
                 dispatch(loggedInUser(profile));
-                navigation.navigate("TourApp");
+                navigation.navigate("Root");
               })
               .catch(error => {
                 Toast.show({

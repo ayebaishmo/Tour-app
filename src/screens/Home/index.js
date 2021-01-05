@@ -5,12 +5,12 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   Alert,
   StyleSheet,
   ActivityIndicator,
   LogBox,
 } from 'react-native';
+import { Button } from 'react-native-elements';
 
 import HomeCard from '../../components/HomeCard';
 
@@ -19,6 +19,9 @@ const Home = ({ navigation }) => {
   // const { error, loading } = categoryReducer;
   const dispatch = useDispatch();
 
+  const goToHotels = () => {
+    navigation.navigate("HotelsScreen");
+  }
   return (
     <View style={styles.container}>
 
@@ -35,6 +38,8 @@ const Home = ({ navigation }) => {
           <HomeCard name="Events" icon="ios-alarm" />
           <HomeCard name="Places" icon="ios-map" />
         </View>
+
+      
       </ScrollView>
     </View>
   );

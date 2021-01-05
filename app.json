@@ -34,6 +34,11 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyD0nmXX284hKkdeoXkQq7_hF2qaMd5knpU"
+        }
       }
     },
     "web": {
@@ -48,6 +53,18 @@
         "apiKey": "AIzaSyCYeFTZcQ0ptQrdS9v0BKkH3tQrV_pQ47w"
       },
       "baseUrl": "https://maps.googleapis.com/maps/api/place"
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "denny-tech-ltd",
+            "project": "tour-app",
+            "authToken": "d16457ba338f4d529d054680ddd5b59131de3f4529f5489999a4277baedc2f6b"
+          }
+        }
+      ]
     }
   }
 }
