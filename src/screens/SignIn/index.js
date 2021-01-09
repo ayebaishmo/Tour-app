@@ -7,12 +7,14 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
+  Dimensions,
   LogBox,
 } from 'react-native';
 import { Card, Button } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import Constant from 'expo-constants';
+import { ProgressBar } from 'react-native-paper';
 import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
 import Toast from 'react-native-toast-message';
 LogBox.ignoreLogs(['Setting a timer']);
@@ -25,8 +27,6 @@ import { loggedInUser } from '../../store/actions/authActions';
  
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'column',
     marginTop: Constant.statusBarHeight,
   },
   top: {
@@ -48,6 +48,13 @@ const styles = StyleSheet.create({
     borderColor: `${primaryColor}`,
     marginTop: 18, 
     borderRadius: 5,
+  },
+  root: {
+    height: 600,
+    flex: 1, 
+    flexDirection: 'column',
+    justifyContent: 'center', 
+    alignItems: 'center'
   }
 });
 const db = firebase.firestore();
@@ -63,6 +70,7 @@ const SignIn = ({navigation, route}) => {
   const [editProfile, setEditProfile] = useState(false);
   const [verificationId, setVerificationId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [firstScreen, setFirstScreen] = useState(true);
 
   const recaptchaVerifier = useRef(null);
   const authReducer = useSelector(state => state.authReducer);
@@ -79,6 +87,8 @@ const SignIn = ({navigation, route}) => {
           },
         ],
       })
+    } else {
+      setFirstScreen(false);
     }
   }, []);
 
@@ -256,14 +266,24 @@ const SignIn = ({navigation, route}) => {
       />
 
       <ScrollView>
-        <View style={styles.top}>
-          <Image source={Logo} style={{width: 150, height: 150}} />
-        </View>
+        {
+          !firstScreen &&
+          <View style={styles.top}>
+            <Image source={Logo} style={{width: 150, height: 150}} />
+          </View>
+        }
 
         <View style={styles.bottom}>
 
-          { editProfile &&
-            
+          {
+            firstScreen &&
+            <View style={styles.root}>
+              {/* <ProgressBar progress={0.5} color={primaryColor} indeterminate={true} /> */}
+              <Text style={{alignSelf: 'center'}}>Loading...</Text>
+            </View>
+          }
+
+          { editProfile && !firstScreen &&
             <View>
               <Text style={{textAlign: 'center', fontWeight: 'bold', fontSize: 24}}>Save your profile </Text>
 
@@ -309,7 +329,7 @@ const SignIn = ({navigation, route}) => {
             </View>
           }
          
-          { isVerificationSent && verificationId && !editProfile &&
+          { isVerificationSent && verificationId && !editProfile && !firstScreen &&
             <View>
                <Text style={{textAlign: 'center', fontWeight: 'bold', fontSize: 24}}>OTP Authentication</Text>
               <Text style={{textAlign: 'center', marginTop: 8}}>Enter the OTP code sent to your phone number</Text>
@@ -334,40 +354,40 @@ const SignIn = ({navigation, route}) => {
                   onPress={confirmCode}
                 />
             </View> 
-            }
+          }
             
-            { !isVerificationSent && 
-              <View>
-                <Text style={{textAlign: 'center', fontWeight: 'bold', fontSize: 24}}>OTP Authentication</Text>
-                <Text style={{textAlign: 'center', marginTop: 8}}>You will receive a One Time Password via your mobile number</Text>
-                <Card containerStyle={styles.textInput}>
-                  <View style={{flexDirection: 'row'}}>
-                    <TextInput 
-                    value="+256"
-                    style={{marginEnd: 8}}
-                    />
-                    <TextInput
-                      editable
-                      keyboardType="numeric"
-                      maxLength={9}
-                      placeholder="Phone number"
-                      onChangeText = {txt => setPhone(txt)}
-                      value={phone}
-                    />
-                  </View>
-                
-                </Card>
+          { !isVerificationSent && !firstScreen &&
+            <View>
+              <Text style={{textAlign: 'center', fontWeight: 'bold', fontSize: 24}}>OTP Authentication</Text>
+              <Text style={{textAlign: 'center', marginTop: 8}}>You will receive a One Time Password via your mobile number</Text>
+              <Card containerStyle={styles.textInput}>
+                <View style={{flexDirection: 'row'}}>
+                  <TextInput 
+                  value="+256"
+                  style={{marginEnd: 8}}
+                  />
+                  <TextInput
+                    editable
+                    keyboardType="numeric"
+                    maxLength={9}
+                    placeholder="Phone number"
+                    onChangeText = {txt => setPhone(txt)}
+                    value={phone}
+                  />
+                </View>
+              
+              </Card>
 
-                <Button
-                  buttonStyle={{width: '100%', backgroundColor: `${primaryColor}`, alignSelf: 'center',  padding: 12}}
-                  titleStyle={{fontSize: 20}}
-                  containerStyle={{ margin: 16 }}
-                  title="Continue"
-                  loading={loading}
-                  onPress={sendVerification}
-                />                
-              </View> 
-            } 
+              <Button
+                buttonStyle={{width: '100%', backgroundColor: `${primaryColor}`, alignSelf: 'center',  padding: 12}}
+                titleStyle={{fontSize: 20}}
+                containerStyle={{ margin: 16 }}
+                title="Continue"
+                loading={loading}
+                onPress={sendVerification}
+              />                
+            </View> 
+          } 
 
         </View>
   

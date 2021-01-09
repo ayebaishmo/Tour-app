@@ -11,37 +11,51 @@ import {
   LogBox,
 } from 'react-native';
 import { Button } from 'react-native-elements';
+import { ProgressBar } from 'react-native-paper';
 
 import HomeCard from '../../components/HomeCard';
+import NoInternet from '../../components/NoInternet';
+import { primaryColor, checkConnected } from '../../helpers';
 
 const Home = ({ navigation }) => {
+  const [connected, setConnected] = useState(false);
   const authReducer = useSelector((state) => state.authReducer);
   // const { error, loading } = categoryReducer;
   const dispatch = useDispatch();
 
-  const goToHotels = () => {
-    navigation.navigate("HotelsScreen");
+  useEffect(() => {
+    checkConnectionStatus();
+  }, [])
+
+  const checkConnectionStatus = () => {
+    checkConnected().then(res => {
+      setConnected(res);
+    });
   }
+
   return (
-    <View style={styles.container}>
+    connected ? (
+      <View style={styles.container}>
+          <ScrollView>
+            <View style={{
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+            }}>
+              <HomeCard name="Hotels" icon="ios-restaurant-sharp" onPressed={() => navigation.navigate("HotelsScreen")} />
+              <HomeCard name="Flights" icon="ios-airplane" />
+              <HomeCard name="Boda" icon="ios-bicycle" />
+              <HomeCard name="Taxi" icon="car-sport" />
+              <HomeCard name="Events" icon="ios-alarm" />
+              <HomeCard name="Places" icon="ios-map" />
 
-      <ScrollView>
-        <View style={{
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-        }}>
-          <HomeCard name="Hotels" icon="ios-restaurant-sharp" onPressed={() => navigation.navigate("HotelsScreen")} />
-          <HomeCard name="Flights" icon="ios-airplane" />
-          <HomeCard name="Boda" icon="ios-bicycle" />
-          <HomeCard name="Taxi" icon="car-sport" />
-          <HomeCard name="Events" icon="ios-alarm" />
-          <HomeCard name="Places" icon="ios-map" />
-        </View>
+              <ProgressBar progress={0.5} color={primaryColor} />
+            </View>
 
-      
-      </ScrollView>
-    </View>
+          
+          </ScrollView>
+      </View>) : (<NoInternet />)
+
   );
 }
 

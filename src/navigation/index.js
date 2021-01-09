@@ -35,8 +35,7 @@ function RootNavigator() {
         name="NotFound" 
         component={NotFound} 
         options={{ title: 'Oops!' }} 
-      />
-      
+      />   
     </Stack.Navigator>
   );
 }
