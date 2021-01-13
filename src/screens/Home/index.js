@@ -48,8 +48,6 @@ const Home = ({ navigation }) => {
               <HomeCard name="Taxi" icon="car-sport" />
               <HomeCard name="Events" icon="ios-alarm" />
               <HomeCard name="Places" icon="ios-map" />
-
-              <ProgressBar progress={0.5} color={primaryColor} />
             </View>
 
           
