@@ -19,7 +19,8 @@ const HomeCard = ({name, icon, onPressed}) => {
           style={{marginEnd: 10}}
         />
       }
-      buttonStyle={{width: 155, backgroundColor: `${primaryColor}`, alignSelf: 'center',  padding: 12}}
+      buttonStyle={{width: 155, backgroundColor: 
+      `${primaryColor}`, alignSelf: 'center',  padding: 12}}
       titleStyle={{fontSize: 20}}
       containerStyle={{margin: 3}}
       title={name}

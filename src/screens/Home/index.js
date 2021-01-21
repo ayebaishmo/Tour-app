@@ -35,7 +35,7 @@ const Home = ({ navigation }) => {
           <HomeCard name="Flights" icon="ios-airplane" />
           <HomeCard name="Boda" icon="ios-bicycle" />
           <HomeCard name="Taxi" icon="car-sport" />
-          <HomeCard name="Events" icon="ios-alarm" />
+          <HomeCard name="Events" icon="ios-alarm" onPressed={() => navigation.navigate("EventsScreen")}/>
           <HomeCard name="Places" icon="ios-map" />
         </View>
 
