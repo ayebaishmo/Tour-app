@@ -10,7 +10,8 @@ export default {
           Home: {
             screens: {
               HomeScreen: 'home',
-              HotelsScreen: 'hotels'
+              HotelsScreen: 'hotels',
+              EventsScreen: 'events'
             },
           },
           Profile: {

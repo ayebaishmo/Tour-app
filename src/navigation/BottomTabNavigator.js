@@ -8,6 +8,7 @@ import Colors from '../constants/Colors';
 import Home from '../screens/Home';
 import Profile from '../screens/Profile';
 import Hotels from '../screens/Hotels';
+import Events from '../screens/Events';
 
 const BottomTab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -54,6 +55,11 @@ const HomeNavigator = () => {
         name="HotelsScreen"
         component={Hotels}
         options={{ headerTitle: 'Hotels' }}
+      />
+      <HomeStack.Screen
+        name="EventsScreen"
+        component={Events}
+        options={{ headerTitle: 'Events' }}
       />
     </HomeStack.Navigator>
   );
