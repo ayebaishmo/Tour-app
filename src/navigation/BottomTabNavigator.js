@@ -13,6 +13,8 @@ import Events from '../screens/Events';
 const BottomTab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
+const EventStack = createStackNavigator();
+const HotelStack = createStackNavigator();
 
 const BottomTabNavigator = () => {
   const colorScheme = useColorScheme();
@@ -21,6 +23,7 @@ const BottomTabNavigator = () => {
     <BottomTab.Navigator
       initialRouteName="Home"
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+
       <BottomTab.Screen
         name="Home"
         component={HomeNavigator}
@@ -28,6 +31,23 @@ const BottomTabNavigator = () => {
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-home" color={color} />,
         }}
       />
+
+      <BottomTab.Screen
+        name="Hotel"
+        component={HotelNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-restaurant-sharp" color={color} />,
+        }}
+      />
+
+      <BottomTab.Screen
+        name="Event"
+        component={EventNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-calendar" color={color} />,
+        }}
+      />
+
       <BottomTab.Screen
         name="Profile"
         component={ProfileNavigator}
@@ -35,12 +55,13 @@ const BottomTabNavigator = () => {
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-person" color={color} />,
         }}
       />
+
     </BottomTab.Navigator>
   );
 }
 
 const TabBarIcon = ( { name, color }) => {
-  return <Ionicons size={30} style={{ marginBottom: -3 }} color={color} name={name} />;
+  return <Ionicons size={24} style={{ marginBottom: -3 }} color={color} name={name} />;
 }
 
 const HomeNavigator = () => {
@@ -51,18 +72,33 @@ const HomeNavigator = () => {
         component={Home}
         options={{ headerTitle: 'Home' }}
       />
-       <HomeStack.Screen
+    
+    </HomeStack.Navigator>
+  );
+}
+
+const HotelNavigator = () => {
+  return (
+    <HotelStack.Navigator>
+      <HotelStack.Screen
         name="HotelsScreen"
         component={Hotels}
         options={{ headerTitle: 'Hotels' }}
       />
-      <HomeStack.Screen
+    </HotelStack.Navigator>
+  )
+}
+
+const EventNavigator = () => {
+  return (
+    <EventStack.Navigator>
+      <EventStack.Screen
         name="EventsScreen"
         component={Events}
         options={{ headerTitle: 'Events' }}
       />
-    </HomeStack.Navigator>
-  );
+    </EventStack.Navigator>
+  )
 }
 
 const ProfileNavigator = () => {
