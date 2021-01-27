@@ -54,7 +54,7 @@ const Home = ({ navigation }) => {
   const fetchNearByHotels = async (lat, lon) => {
     setLoading(true);
     await axios
-      .get(`${baseUrl}/nearbysearch/json?location=${lat},${lon}&radius=300&type=hotel&keyword=lodging,spa&key=${apiKey}`)
+      .get(`${baseUrl}/nearbysearch/json?location=${lat},${lon}&radius=1000&type=hotel&keyword=lodging,spa&key=${apiKey}`)
       .then(res => {
         setPlaces(res.data.results);
         console.log("Fetched hotels: ", res.data.results)
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     left: 0,
     bottom: 0,
-    opacity: 0.6,
+    opacity: 0.5,
     backgroundColor: 'black',
     width: '100%',
     maxHeight: 40,
