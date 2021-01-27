@@ -8,9 +8,10 @@ import {
   Alert,
   StyleSheet,
   ActivityIndicator,
+  TouchableOpacity,
   LogBox,
 } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button, Card, Image } from 'react-native-elements';
 import { ProgressBar } from 'react-native-paper';
 
 import HomeCard from '../../components/HomeCard';
@@ -33,21 +34,63 @@ const Home = ({ navigation }) => {
     });
   }
 
+  const myEvents = [
+    {
+      id: 0,
+      name: 'Conference in Serena hotel',
+      image: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg',
+    },
+    {
+      id: 2,
+      name: 'ALC meetup',
+      image: 'https://p.bigstockphoto.com/GeFvQkBbSLaMdpKXF1Zv_bigstock-Aerial-View-Of-Blue-Lakes-And--227291596.jpg',
+    },
+  ] 
+  const HotelCard = ({event}) => {
+    return (
+      <View style={{}}>
+        <View style={{minHeight: 200, width: 300, marginStart: 16}}>
+          {/* <Text>{event.name}</Text> */}
+          <Image
+              style={styles.image}
+              resizeMode="cover"
+              source={{ uri: event.image}}
+            />
+        </View>
+    </View>
+    )
+  }
+
   return (
     connected ? (
       <View style={styles.container}>
           <ScrollView>
-            <View style={{
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-              justifyContent: 'center',
-            }}>
-              <HomeCard name="Hotels" icon="ios-restaurant-sharp" onPressed={() => navigation.navigate("HotelsScreen")} />
-              {/* <HomeCard name="Flights" icon="ios-airplane" />
-              <HomeCard name="Boda" icon="ios-bicycle" />
-              <HomeCard name="Taxi" icon="car-sport" />
-              <HomeCard name="Events" icon="ios-alarm" onPressed={() => navigation.navigate("EventsScreen")} />
-              <HomeCard name="Places" icon="ios-map" /> */}
+            <View>
+
+              <ScrollView horizontal={true}>
+                <View style={{
+                  margin: 16,
+                  flexDirection: 'row',
+                  width: '100%',
+                }}>
+                  <HomeCard name="Boda" icon="ios-bicycle" onPressed={() => navigation.navigate("ComingSoonScreen")} />
+                  <HomeCard name="Taxi" icon="car-sport" onPressed={() => navigation.navigate("ComingSoonScreen")} />
+                </View>
+              </ScrollView>
+
+              <Text style={{fontSize: 18, margin: 16}}>Nearby Events</Text>
+              <ScrollView horizontal={true} >
+                  {
+                    myEvents.map(item => (
+                      <TouchableOpacity 
+                        key={item.id} 
+                        onPress={() => {}}>
+                        <HotelCard event={item} />
+                      </TouchableOpacity>
+                    ))
+                  }
+              </ScrollView>
+                
             </View>
 
           
@@ -63,8 +106,12 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 16,
     backgroundColor: '#fff',
   },
+  image: {
+    width: '100%', 
+    height: 200,
+    borderRadius: 16,
+  }
 })
 export default Home

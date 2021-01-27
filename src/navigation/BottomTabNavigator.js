@@ -9,6 +9,7 @@ import Home from '../screens/Home';
 import Profile from '../screens/Profile';
 import Hotels from '../screens/Hotels';
 import Events from '../screens/Events';
+import ComingSoon from '../screens/ComingSoon';
 
 const BottomTab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -36,7 +37,7 @@ const BottomTabNavigator = () => {
         name="Hotel"
         component={HotelNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-restaurant-sharp" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-bed" color={color} />,
         }}
       />
 
@@ -72,7 +73,13 @@ const HomeNavigator = () => {
         component={Home}
         options={{ headerTitle: 'Home' }}
       />
-    
+
+      <HomeStack.Screen
+        name="ComingSoonScreen"
+        component={ComingSoon}
+        options={{ headerTitle: 'Coming Soon' }}
+      />
+
     </HomeStack.Navigator>
   );
 }
