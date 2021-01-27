@@ -257,9 +257,9 @@ const Hotels = () => {
             {
               selectedHotel.photos 
               ? <Image 
-                  source={{uri: `${baseUrl}/photo?maxwidth=400&photoreference=${selectedHotel.photos[0].photo_reference}&key=${apiKey}`}} 
-                  style={{width: '100%', height: 250}}
-                  onError={(err) => console.log('Image error: ',err)}
+                source={{uri: `${baseUrl}/photo?maxwidth=400&photoreference=${selectedHotel.photos[0].photo_reference}&key=${apiKey}`}} 
+                style={{width: '100%', height: 250}}
+                onError={(err) => console.log('Image error: ',err)}
                 />
               : <Image
                 source={{uri: selectedHotel.icon}} 

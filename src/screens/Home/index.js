@@ -11,21 +11,38 @@ import {
   TouchableOpacity,
   LogBox,
 } from 'react-native';
+import * as Location from 'expo-location';
+import axios from 'axios';
 import { Button, Card, Image } from 'react-native-elements';
 import { ProgressBar } from 'react-native-paper';
+import Constants from 'expo-constants';
 
+import  { mapsApiKey } from '../../../config';
 import HomeCard from '../../components/HomeCard';
 import NoInternet from '../../components/NoInternet';
 import { primaryColor, checkConnected } from '../../helpers';
 
 const Home = ({ navigation }) => {
   const [connected, setConnected] = useState(false);
+  const [places, setPlaces] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [locationResult, setLocationResult] = useState(null);
+  const [state, setstate] = useState({
+    latitude: 0.31161,
+    longitude: 32.58634,
+    latitudeDelta: 0.9,
+    longitudeDelta: 0.0
+  });
+  const baseUrl = Constants.manifest.extra.baseUrl;
+  const apiKey = mapsApiKey;
+
   const authReducer = useSelector((state) => state.authReducer);
   // const { error, loading } = categoryReducer;
   const dispatch = useDispatch();
 
   useEffect(() => {
     checkConnectionStatus();
+    getLocationAsync();
   }, [])
 
   const checkConnectionStatus = () => {
@@ -33,6 +50,43 @@ const Home = ({ navigation }) => {
       setConnected(res);
     });
   }
+
+  const fetchNearByHotels = async (lat, lon) => {
+    setLoading(true);
+    await axios
+      .get(`${baseUrl}/nearbysearch/json?location=${lat},${lon}&radius=300&type=hotel&keyword=lodging,spa&key=${apiKey}`)
+      .then(res => {
+        setPlaces(res.data.results);
+        console.log("Fetched hotels: ", res.data.results)
+        setLoading(false);
+      })
+      .catch(err => {
+        console.log('Places error: ', err);
+        setLoading(false);
+      });
+  }
+
+  const getLocationAsync = async () => {
+    let { status } = await Location.requestPermissionsAsync();
+    if (status !== 'granted') {
+      setLocationResult('Permission to access location was denied');
+      return;
+    }
+
+    await Location.getCurrentPositionAsync({ "accuracy": Location.Accuracy.High })
+      .then(res => {
+        setLocationResult(JSON.stringify(res));
+        setstate({
+          ...state,
+          latitude: res.coords.latitude,
+          longitude: res.coords.longitude
+        });
+        fetchNearByHotels(res.coords.latitude, res.coords.longitude);
+      })
+      .then(err => {
+        console.log(err);
+      });
+  };
 
   const myEvents = [
     {
@@ -46,7 +100,7 @@ const Home = ({ navigation }) => {
       image: 'https://p.bigstockphoto.com/GeFvQkBbSLaMdpKXF1Zv_bigstock-Aerial-View-Of-Blue-Lakes-And--227291596.jpg',
     },
   ] 
-  const HotelCard = ({event}) => {
+  const EventCard = ({event}) => {
     return (
       <View style={{}}>
         <View style={{minHeight: 200, width: 300, marginStart: 16}}>
@@ -61,11 +115,35 @@ const Home = ({ navigation }) => {
     )
   }
 
+  const HotelCard = ({hotel}) => {
+    console.log("Hotels: ",hotel)
+    return (
+      <View style={{}}>
+        <View style={{minHeight: 150, width: 180, marginStart: 16}}>
+          {/* <Text>{hotel.name}</Text> */}
+          {
+            hotel.photos 
+            ? <Image 
+              source={{uri: `${baseUrl}/photo?maxwidth=400&photoreference=${hotel.photos[0].photo_reference}&key=${apiKey}`}} 
+              style={styles.image}
+              onError={(err) => console.log('Image error: ',err)}
+              />
+            : <Image
+              source={{uri: hotel.icon}} 
+              style={styles.image}
+              onError={(err) => console.log('Image error: ',err)}
+              />
+          }
+        </View>
+    </View>
+    )
+  }
+
   return (
     connected ? (
       <View style={styles.container}>
           <ScrollView>
-            <View>
+            <View style={{marginBottom: 20}}>
 
               <ScrollView horizontal={true}>
                 <View style={{
@@ -78,18 +156,35 @@ const Home = ({ navigation }) => {
                 </View>
               </ScrollView>
 
-              <Text style={{fontSize: 18, margin: 16}}>Nearby Events</Text>
+              <Text style={{fontSize: 20, margin: 16}}>Nearby Events</Text>            
               <ScrollView horizontal={true} >
                   {
                     myEvents.map(item => (
                       <TouchableOpacity 
                         key={item.id} 
                         onPress={() => {}}>
-                        <HotelCard event={item} />
+                        <EventCard event={item} />
                       </TouchableOpacity>
                     ))
                   }
               </ScrollView>
+
+              <Text style={{fontSize: 20, margin: 16}}>Nearby Hotels</Text>
+              {
+                 loading 
+                 ? <Text style={{textAlign: 'center'}}>Loading...</Text>
+                 : <ScrollView horizontal={true} >
+                    {
+                      places?.map((hotel, index) => (
+                          <TouchableOpacity 
+                            key={hotel.place_id} 
+                            onPress={() => {}}>
+                            <HotelCard hotel={hotel} />
+                          </TouchableOpacity>
+                        ))
+                    }
+                    </ScrollView>
+              }
                 
             </View>
 
