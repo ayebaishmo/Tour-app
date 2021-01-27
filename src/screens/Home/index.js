@@ -116,11 +116,10 @@ const Home = ({ navigation }) => {
   }
 
   const HotelCard = ({hotel}) => {
-    console.log("Hotels: ",hotel)
     return (
       <View style={{}}>
         <View style={{minHeight: 150, width: 180, marginStart: 16}}>
-          {/* <Text>{hotel.name}</Text> */}
+         
           {
             hotel.photos 
             ? <Image 
@@ -134,6 +133,10 @@ const Home = ({ navigation }) => {
               onError={(err) => console.log('Image error: ',err)}
               />
           }
+
+          <View style={styles.overlay}>
+            <Text style={{color: 'white'}}>{hotel.name}</Text>
+          </View>
         </View>
     </View>
     )
@@ -207,6 +210,22 @@ const styles = StyleSheet.create({
     width: '100%', 
     height: 200,
     borderRadius: 16,
-  }
+  },
+  overlay: {
+    flex: 1,
+    position: 'absolute',
+    paddingEnd: 16,
+    paddingStart: 16,
+    paddingTop: 8,
+    paddingBottom: 8,
+    left: 0,
+    bottom: 0,
+    opacity: 0.6,
+    backgroundColor: 'black',
+    width: '100%',
+    maxHeight: 40,
+    borderBottomStartRadius: 16,
+    borderBottomEndRadius: 16
+  } 
 })
 export default Home
