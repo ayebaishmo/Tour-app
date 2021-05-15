@@ -13,7 +13,7 @@ import * as Location from 'expo-location';
 import { LocationGeofencingEventType } from 'expo-location';
 import { FAB, Searchbar } from "react-native-paper";
 import * as TaskManager from 'expo-task-manager';
-import  { mapsApiKey } from '../../../config';
+// import  { mapsApiKey } from '../../../config';
 import {MaterialIcons, Ionicons} from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import axios from 'axios';
@@ -45,7 +45,7 @@ const Hotels = () => {
   });
 
   const baseUrl = Constants.manifest.extra.baseUrl;
-  const apiKey = mapsApiKey;
+  const apiKey = 'AIzaSyCYeFTZcQ0ptQrdS9v0BKkH3tQrV_pQ47w';
 
   const fetchNearByHotels = async (lat, lon) => {
     setLoading(true);

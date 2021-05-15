@@ -17,7 +17,7 @@ import { Button, Card, Image } from 'react-native-elements';
 import { ProgressBar } from 'react-native-paper';
 import Constants from 'expo-constants';
 
-import  { mapsApiKey } from '../../../config';
+// import  { mapsApiKey } from '../../../config';
 import HomeCard from '../../components/HomeCard';
 import NoInternet from '../../components/NoInternet';
 import { primaryColor, checkConnected } from '../../helpers';
@@ -34,7 +34,7 @@ const Home = ({ navigation }) => {
     longitudeDelta: 0.0
   });
   const baseUrl = Constants.manifest.extra.baseUrl;
-  const apiKey = mapsApiKey;
+  const apiKey = 'AIzaSyCYeFTZcQ0ptQrdS9v0BKkH3tQrV_pQ47w';
 
   const authReducer = useSelector((state) => state.authReducer);
   // const { error, loading } = categoryReducer;
