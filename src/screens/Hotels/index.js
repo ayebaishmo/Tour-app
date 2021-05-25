@@ -332,8 +332,6 @@ const Hotels = () => {
           </BottomSheetScrollView>
         </BottomSheet>
       }
-     
-
     </View>
   );
 }
