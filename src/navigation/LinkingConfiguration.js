@@ -19,7 +19,9 @@ export default {
           },
           Event: {
             screens: {
-              EventsScreen: 'events'
+              EventsScreen: 'events',
+              EventDetailsScreen: 'event_details',
+              NewEventScreen: 'new_event'
             },
           },
           Profile: {

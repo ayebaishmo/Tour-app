@@ -34,7 +34,8 @@ const Home = ({ navigation }) => {
     longitudeDelta: 0.0
   });
   const baseUrl = Constants.manifest.extra.baseUrl;
-  const apiKey = 'AIzaSyCYeFTZcQ0ptQrdS9v0BKkH3tQrV_pQ47w';
+  const apiKey = 'AIzaSyCYeFTZcQ0ptQrdS9v0BKkH3tQrV_pQ47w'
+  // const apiKey = Constants.manifest.extra.googleMaps.apiKey;
 
   const authReducer = useSelector((state) => state.authReducer);
   // const { error, loading } = categoryReducer;
@@ -67,7 +68,7 @@ const Home = ({ navigation }) => {
   }
 
   const getLocationAsync = async () => {
-    let { status } = await Location.requestPermissionsAsync();
+    let { status } = await Location.requestBackgroundPermissionsAsync();
     if (status !== 'granted') {
       setLocationResult('Permission to access location was denied');
       return;

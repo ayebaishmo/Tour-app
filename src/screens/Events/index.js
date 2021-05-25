@@ -1,10 +1,29 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, Text} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View, ScrollView} from 'react-native';
+import { Button } from 'react-native-elements';
+import { Ionicons } from '@expo/vector-icons';
+import {primaryColor} from '../../helpers';
 
-const Events = () => {
+const Events = ({ navigation }) => {
     return (
       <SafeAreaView style={styles.container}>
-        <Text style={styles.appTitle}>Events</Text>
+          <View style={styles.floatingMenuButtonStyle}>
+            <Button style={styles.buttonStyle} 
+              icon={
+                <Ionicons
+                  name="add"
+                  size={25}
+                  color="white"
+                  style={{marginEnd: 10}}
+                />
+              }
+              buttonStyle={styles.buttonStyle}
+              titleStyle={{fontSize: 20}}
+              containerStyle={{margin: 3}}
+              onPress={() => navigation.navigate("NewEventScreen")}
+              title="New"
+            />
+          </View>
       </SafeAreaView>
     );
   };
@@ -12,17 +31,25 @@ const Events = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#3143e8',
+      backgroundColor: '#fff',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
-    appTitle: {
-      color: '#fff',
-      fontSize: 36,
-      marginTop: 30,
-      marginBottom: 30,
-      fontWeight: '300',
-      textAlign: 'center',
-      backgroundColor: '#3143e8',
+    buttonStyle: {
+      width: 150,
+      backgroundColor: `${primaryColor}`,
+      borderRadius: 50, 
+      alignSelf: 'flex-end',  
+      // marginEnd: 16,
+      padding: 8,
     },
+    floatingMenuButtonStyle: {
+      zIndex: 10,
+      alignSelf: 'flex-end',
+      position: 'absolute',
+      bottom: 32,
+      right: 20
+    }
   });
   
   export default Events;

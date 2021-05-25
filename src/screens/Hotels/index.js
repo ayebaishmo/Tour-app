@@ -106,7 +106,7 @@ const Hotels = () => {
   }, []);
 
   const getLocationAsync = async () => {
-    let { status } = await Location.requestPermissionsAsync();
+    let { status } = await Location.requestBackgroundPermissionsAsync();
     if (status !== 'granted') {
       setLocationResult('Permission to access location was denied');
       return;

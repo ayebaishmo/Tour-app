@@ -9,6 +9,8 @@ import Home from '../screens/Home';
 import Profile from '../screens/Profile';
 import Hotels from '../screens/Hotels';
 import Events from '../screens/Events';
+import EventDetails from '../screens/Events/EventDetails';
+import NewEvent from '../screens/Events/NewEvent';
 import ComingSoon from '../screens/ComingSoon';
 
 const BottomTab = createBottomTabNavigator();
@@ -103,6 +105,16 @@ const EventNavigator = () => {
         name="EventsScreen"
         component={Events}
         options={{ headerTitle: 'Events' }}
+      />
+      <EventStack.Screen
+        name="EventDetailsScreen"
+        component={EventDetails}
+        options={{ headerTitle: 'Event Details' }}
+      />
+      <EventStack.Screen
+        name="NewEventScreen"
+        component={NewEvent}
+        options={{ headerTitle: 'New Event' }}
       />
     </EventStack.Navigator>
   )
