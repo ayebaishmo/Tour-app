@@ -58,7 +58,6 @@ const Home = ({ navigation }) => {
       .get(`${baseUrl}/nearbysearch/json?location=${lat},${lon}&radius=1000&type=hotel&keyword=lodging,spa&key=${apiKey}`)
       .then(res => {
         setPlaces(res.data.results);
-        console.log("Fetched hotels: ", res.data.results)
         setLoading(false);
       })
       .catch(err => {

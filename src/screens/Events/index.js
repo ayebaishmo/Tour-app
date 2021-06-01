@@ -40,7 +40,6 @@ const Events = ({ navigation }) => {
       backgroundColor: `${primaryColor}`,
       borderRadius: 50, 
       alignSelf: 'flex-end',  
-      // marginEnd: 16,
       padding: 8,
     },
     floatingMenuButtonStyle: {
