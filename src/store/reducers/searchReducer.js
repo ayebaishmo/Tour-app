@@ -1,7 +1,7 @@
-import appConstants from "../constants";
-import initialState from "../initialState";
+import appConstants from '../constants';
+import initialState from '../initialState';
 
-const { SET_SEARCH_ITEM } = appConstants;
+const { SET_SEARCH_ITEM, SET_OPEN_DIALOG } = appConstants;
 
 const searchReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -9,6 +9,12 @@ const searchReducer = (state = initialState, action) => {
       return {
         ...state,
         searchPlace: action.item,
+      };
+
+    case SET_OPEN_DIALOG:
+      return {
+        ...state,
+        open: action.item,
       };
 
     default:

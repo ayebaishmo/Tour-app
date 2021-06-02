@@ -4,7 +4,7 @@ import React, {
   useRef,
   useMemo,
   useCallback,
-} from "react";
+} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -16,31 +16,36 @@ import {
   Pressable,
   Alert,
   TouchableOpacity,
-} from "react-native";
-import { Card, Button, Input, ListItem } from "react-native-elements";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { primaryColor } from "../../../helpers";
-import SearchPlace from "../../../components/SearchPlace";
+} from 'react-native';
+import { Card, Button, Input, ListItem } from 'react-native-elements';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { primaryColor } from '../../../helpers';
+import SearchPlace from '../../../components/SearchPlace';
+import { openDialog } from '../../../store/actions/searchAction';
 
 const NewEvent = () => {
-  const [searchItem, setSearchItem] = useState("");
+  const [searchItem, setSearchItem] = useState('');
   const [places, setPlaces] = useState([]);
-  const [panelActive, setPanelActive] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selectedHotel, setSelectedHotel] = useState(null);
 
+  const searchReducer = useSelector((state) => state.searchReducer);
+  const { searchPlace, open } = searchReducer;
+  const dispatch = useDispatch();
+
   const openSearch = () => {
-    setPanelActive(true);
+    dispatch(openDialog(true));
   };
 
   const closeSearch = () => {
-    setPanelActive(false);
+    dispatch(openDialog(false));
   };
 
   return (
-    <SafeAreaView
-      style={panelActive ? styles.overlayContainer : styles.container}>
-      {!panelActive && (
+    <SafeAreaView style={open ? styles.overlayContainer : styles.container}>
+      {!open && (
         <ScrollView>
           <View style={{ marginEnd: 20, marginStart: 20, marginTop: 30 }}>
             <Input label="Event name" />
@@ -52,7 +57,7 @@ const NewEvent = () => {
               numberOfLines={4}
             />
 
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Button
                 icon={
                   <MaterialIcons
@@ -64,7 +69,7 @@ const NewEvent = () => {
                 onPress={openSearch}
                 buttonStyle={{ backgroundColor: primaryColor, padding: 3 }}
               />
-              <Text style={{ marginStart: 16 }}>Add location</Text>
+              <Text style={{ marginStart: 16 }}>{searchPlace.name}</Text>
             </View>
           </View>
 
@@ -78,9 +83,9 @@ const NewEvent = () => {
                   style={{ marginEnd: 10 }}
                 />
               }
-              buttonStyle={{ backgroundColor: "white" }}
+              buttonStyle={{ backgroundColor: 'white' }}
               title="Pick image"
-              titleStyle={{ color: "#555" }}
+              titleStyle={{ color: '#555' }}
             />
           </Card>
 
@@ -96,7 +101,7 @@ const NewEvent = () => {
         </ScrollView>
       )}
 
-      {panelActive && (
+      {open && (
         <TouchableOpacity onPress={closeSearch} style={styles.roundBtnLayout}>
           <View style={styles.roundButton}>
             <MaterialIcons name="close" size={30} color="#111" />
@@ -104,7 +109,7 @@ const NewEvent = () => {
         </TouchableOpacity>
       )}
 
-      {panelActive && <SearchPlace />}
+      {open && <SearchPlace />}
     </SafeAreaView>
   );
 };
@@ -112,33 +117,32 @@ const NewEvent = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
 
   overlayContainer: {
     flex: 1,
-    backgroundColor: "rgba(0.5, 0.25, 0, 0.2)",
+    backgroundColor: 'rgba(0.5, 0.25, 0, 0.2)',
   },
   imageCardStyle: {
     height: 200,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     margin: 30,
   },
   roundButton: {
     width: 60,
     height: 60,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 10,
     borderRadius: 100,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   roundBtnLayout: {
-    position: "absolute",
-    top: Dimensions.get("window").height / 8,
-    left: Dimensions.get("window").width / 2.4,
-    zIndex: 999,
+    alignItems: 'center',
+    marginBottom: 20,
+    marginTop: 20,
   },
 });
 

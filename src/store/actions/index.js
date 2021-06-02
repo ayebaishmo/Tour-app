@@ -1,7 +1,13 @@
-
 import {
-  setLogIn, setLogOut, authLoading, loggedInUser, createUser, authError,
+  setLogIn,
+  setLogOut,
+  authLoading,
+  loggedInUser,
+  createUser,
+  authError,
 } from './authActions';
+
+import { setSearchItem, openDialog } from './searchAction';
 
 const logInUser = (profile) => (dispatch) => {
   dispatch(loggedInUser(profile));
@@ -18,8 +24,12 @@ const signUpUser = () => (dispatch) => {
   dispatch(dispatch(setLogIn()));
 };
 
-export {
-  logInUser,
-  logOutUser,
-  signUpUser,
+const setSearchPlace = (dispatch) => {
+  dispatch(setSearchItem);
 };
+
+const setOpenDialog = (dispatch) => {
+  dispatch(openDialog);
+};
+
+export { logInUser, logOutUser, signUpUser, setSearchPlace, setOpenDialog };
