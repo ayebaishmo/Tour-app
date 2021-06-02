@@ -40,7 +40,6 @@ const SearchPlace = () => {
   };
 
   const selectPlace = (place) => {
-    console.log(place);
     dispatch(setSearchItem(place));
     dispatch(openDialog(false));
   };
@@ -80,9 +79,7 @@ const SearchPlace = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // padding: 16,
+    padding: 16,
   },
 });
 

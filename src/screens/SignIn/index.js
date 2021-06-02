@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,21 +9,21 @@ import {
   TouchableOpacity,
   Dimensions,
   LogBox,
-} from "react-native";
-import { Card, Button } from "react-native-elements";
-import { Ionicons } from "@expo/vector-icons";
-import { useDispatch, useSelector } from "react-redux";
-import Constant from "expo-constants";
-import { ProgressBar } from "react-native-paper";
-import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
-import Toast from "react-native-toast-message";
-LogBox.ignoreLogs(["Setting a timer"]);
+} from 'react-native';
+import { Card, Button } from 'react-native-elements';
+import { Ionicons } from '@expo/vector-icons';
+import { useDispatch, useSelector } from 'react-redux';
+import Constant from 'expo-constants';
+import { ProgressBar } from 'react-native-paper';
+import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
+import Toast from 'react-native-toast-message';
+LogBox.ignoreLogs(['Setting a timer']);
 
-import firebase from "../../firebase";
+import firebase from '../../firebase';
 
-import { primaryColor } from "../../helpers";
-import Logo from "../../../assets/icon.png";
-import { loggedInUser } from "../../store/actions/authActions";
+import { primaryColor } from '../../helpers';
+import Logo from '../../../assets/icon.png';
+import { loggedInUser } from '../../store/actions/authActions';
 
 const styles = StyleSheet.create({
   container: {
@@ -31,9 +31,9 @@ const styles = StyleSheet.create({
   },
   top: {
     height: 300,
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   bottom: {
     padding: 16,
@@ -52,19 +52,19 @@ const styles = StyleSheet.create({
   root: {
     height: 600,
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 const db = firebase.firestore();
 
 const SignIn = ({ navigation, route }) => {
-  const [phone, setPhone] = useState("");
-  const [code, setCode] = useState("");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState('');
+  const [code, setCode] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [address, setAddress] = useState('');
 
   const [isVerificationSent, setIsVerificationSent] = useState(false);
   const [editProfile, setEditProfile] = useState(false);
@@ -83,7 +83,7 @@ const SignIn = ({ navigation, route }) => {
         index: 0,
         routes: [
           {
-            name: "Root",
+            name: 'Root',
           },
         ],
       });
@@ -112,9 +112,9 @@ const SignIn = ({ navigation, route }) => {
     } else {
       setLoading(false);
       Toast.show({
-        text2: "Please enter a valid phone number",
-        position: "bottom",
-        type: "error",
+        text2: 'Please enter a valid phone number',
+        position: 'bottom',
+        type: 'error',
         autoHide: true,
       });
     }
@@ -137,9 +137,9 @@ const SignIn = ({ navigation, route }) => {
     } else {
       setLoading(false);
       Toast.show({
-        text2: "Please enter a valid verification code",
-        position: "bottom",
-        type: "error",
+        text2: 'Please enter a valid verification code',
+        position: 'bottom',
+        type: 'error',
         autoHide: true,
       });
     }
@@ -147,29 +147,29 @@ const SignIn = ({ navigation, route }) => {
 
   const checkUserProfile = () => {
     const user = firebase.auth().currentUser;
-    db.collection("/users")
+    db.collection('/users')
       .doc(user.uid)
       .get()
       .then((snapshot) => {
         if (snapshot.exists) {
-          console.log("User exists", snapshot);
+          console.log('User exists', snapshot);
           dispatch(loggedInUser(snapshot.data()));
           navigation.reset({
             index: 0,
             routes: [
               {
-                name: "Root",
+                name: 'Root',
               },
             ],
           });
         } else {
-          console.log("User does not exist");
+          console.log('User does not exist');
           setEditProfile(true);
         }
 
         setLoading(false);
       })
-      .catch((err) => console.log("Error checking user profile", err));
+      .catch((err) => console.log('Error checking user profile', err));
   };
 
   const saveUserProfile = () => {
@@ -178,25 +178,25 @@ const SignIn = ({ navigation, route }) => {
 
     if (!name) {
       Toast.show({
-        text2: "Enter a valid name",
-        position: "bottom",
-        type: "error",
+        text2: 'Enter a valid name',
+        position: 'bottom',
+        type: 'error',
         autoHide: true,
       });
       setLoading(false);
     } else if (!email) {
       Toast.show({
-        text2: "Enter a valid email",
-        position: "bottom",
-        type: "error",
+        text2: 'Enter a valid email',
+        position: 'bottom',
+        type: 'error',
         autoHide: true,
       });
       setLoading(false);
     } else if (!address) {
       Toast.show({
-        text2: "Enter a valid address",
-        position: "bottom",
-        type: "error",
+        text2: 'Enter a valid address',
+        position: 'bottom',
+        type: 'error',
         autoHide: true,
       });
       setLoading(false);
@@ -206,15 +206,15 @@ const SignIn = ({ navigation, route }) => {
           displayName: name,
         })
         .then((res) => {
-          console.log("Profile updated", res);
+          console.log('Profile updated', res);
           user
             .updateEmail(email)
             .then((result) => {
-              console.log("Email updated", result);
+              console.log('Email updated', result);
               user
                 .sendEmailVerification()
                 .then((emailSuccess) =>
-                  console.log("Email verification sent", emailSuccess)
+                  console.log('Email verification sent', emailSuccess)
                 );
 
               const profile = {
@@ -228,31 +228,31 @@ const SignIn = ({ navigation, route }) => {
               };
               console.log(profile);
 
-              db.collection("/users")
+              db.collection('/users')
                 .doc(user.uid)
                 .set(profile)
                 .then((profileRes) => {
                   setLoading(false);
                   console.log(profileRes);
                   dispatch(loggedInUser(profile));
-                  navigation.navigate("Root");
+                  navigation.navigate('Root');
                 })
                 .catch((error) => {
                   Toast.show({
-                    text2: "Profile not saved, Please try again!",
-                    position: "bottom",
-                    type: "error",
+                    text2: 'Profile not saved, Please try again!',
+                    position: 'bottom',
+                    type: 'error',
                     autoHide: true,
                   });
-                  console.log("Error saving profile", error);
+                  console.log('Error saving profile', error);
                 });
             })
             .catch((emailError) => {
               setLoading(false);
               Toast.show({
                 text2: emailError,
-                position: "bottom",
-                type: "error",
+                position: 'bottom',
+                type: 'error',
                 autoHide: true,
               });
               console.log(emailError);
@@ -260,7 +260,7 @@ const SignIn = ({ navigation, route }) => {
         })
         .catch((err) => {
           setLoading(false);
-          console.log("Error updating profile", err);
+          console.log('Error updating profile', err);
         });
     }
   };
@@ -283,7 +283,7 @@ const SignIn = ({ navigation, route }) => {
           {firstScreen && (
             <View style={styles.root}>
               {/* <ProgressBar progress={0.5} color={primaryColor} indeterminate={true} /> */}
-              <Text style={{ alignSelf: "center" }}>Loading...</Text>
+              <Text style={{ alignSelf: 'center' }}>Loading...</Text>
             </View>
           )}
 
@@ -291,11 +291,11 @@ const SignIn = ({ navigation, route }) => {
             <View>
               <Text
                 style={{
-                  textAlign: "center",
-                  fontWeight: "bold",
+                  textAlign: 'center',
+                  fontWeight: 'bold',
                   fontSize: 24,
                 }}>
-                Save your profile{" "}
+                Save your profile{' '}
               </Text>
 
               <Card containerStyle={styles.profileInputs}>
@@ -330,9 +330,9 @@ const SignIn = ({ navigation, route }) => {
 
               <Button
                 buttonStyle={{
-                  width: "100%",
+                  width: '100%',
                   backgroundColor: `${primaryColor}`,
-                  alignSelf: "center",
+                  alignSelf: 'center',
                   padding: 12,
                 }}
                 titleStyle={{ fontSize: 20 }}
@@ -351,13 +351,13 @@ const SignIn = ({ navigation, route }) => {
               <View>
                 <Text
                   style={{
-                    textAlign: "center",
-                    fontWeight: "bold",
+                    textAlign: 'center',
+                    fontWeight: 'bold',
                     fontSize: 24,
                   }}>
                   OTP Authentication
                 </Text>
-                <Text style={{ textAlign: "center", marginTop: 8 }}>
+                <Text style={{ textAlign: 'center', marginTop: 8 }}>
                   Enter the OTP code sent to your phone number
                 </Text>
 
@@ -374,9 +374,9 @@ const SignIn = ({ navigation, route }) => {
 
                 <Button
                   buttonStyle={{
-                    width: "100%",
+                    width: '100%',
                     backgroundColor: `${primaryColor}`,
-                    alignSelf: "center",
+                    alignSelf: 'center',
                     padding: 12,
                   }}
                   titleStyle={{ fontSize: 20 }}
@@ -392,17 +392,17 @@ const SignIn = ({ navigation, route }) => {
             <View>
               <Text
                 style={{
-                  textAlign: "center",
-                  fontWeight: "bold",
+                  textAlign: 'center',
+                  fontWeight: 'bold',
                   fontSize: 24,
                 }}>
                 OTP Authentication
               </Text>
-              <Text style={{ textAlign: "center", marginTop: 8 }}>
+              <Text style={{ textAlign: 'center', marginTop: 8 }}>
                 You will receive a One Time Password via your mobile number
               </Text>
               <Card containerStyle={styles.textInput}>
-                <View style={{ flexDirection: "row" }}>
+                <View style={{ flexDirection: 'row' }}>
                   <TextInput value="+256" style={{ marginEnd: 8 }} />
                   <TextInput
                     editable
@@ -417,9 +417,9 @@ const SignIn = ({ navigation, route }) => {
 
               <Button
                 buttonStyle={{
-                  width: "100%",
+                  width: '100%',
                   backgroundColor: `${primaryColor}`,
-                  alignSelf: "center",
+                  alignSelf: 'center',
                   padding: 12,
                 }}
                 titleStyle={{ fontSize: 20 }}
