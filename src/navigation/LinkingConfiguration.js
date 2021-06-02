@@ -1,37 +1,37 @@
-import * as Linking from 'expo-linking';
+import * as Linking from "expo-linking";
 
 export default {
-  prefixes: [Linking.makeUrl('/')],
+  prefixes: [Linking.makeUrl("/")],
   config: {
     screens: {
-      SignIn: 'signin',
+      SignIn: "signin",
       Root: {
         screens: {
           Home: {
             screens: {
-              HomeScreen: 'home',
+              HomeScreen: "home",
             },
           },
           Hotel: {
             screens: {
-              HotelsScreen: 'hotels',
+              HotelsScreen: "hotels",
             },
           },
           Event: {
             screens: {
-              EventsScreen: 'events',
-              EventDetailsScreen: 'event_details',
-              NewEventScreen: 'new_event'
+              EventsScreen: "events",
+              EventDetailsScreen: "event_details",
+              NewEventScreen: "new_event",
             },
           },
           Profile: {
             screens: {
-              ProfileScreen: 'profile',
+              ProfileScreen: "profile",
             },
           },
         },
       },
-      NotFound: '*',
+      NotFound: "*",
     },
   },
 };

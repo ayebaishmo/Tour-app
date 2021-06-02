@@ -15,6 +15,8 @@ const appConstants = {
   DRAWER_OPEN: 'DRAWER_OPEN',
   DRAWER_CLOSED: 'DRAWER_CLOSED',
 
+  SET_SEARCH_ITEM: 'SET_SEARCH_ITEM',
+
 };
 
 export default appConstants;
